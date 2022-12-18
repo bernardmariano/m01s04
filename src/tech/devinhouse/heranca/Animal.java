@@ -1,7 +1,5 @@
 package tech.devinhouse.heranca;
 
-package tech.devinhouse.heranca;
-
 public abstract class Animal {
 
     protected String nome;

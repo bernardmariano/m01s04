@@ -1,29 +1,42 @@
 package tech.devinhouse.calculadora;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Principal {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Digite a operação que deseja realizar: ");
-        System.out.println("A - adição / S - subtração / M - multiplicação / D - divisão");
-        String opcao = scanner.next();
-        System.out.print("Digite o valor 1: ");
-        double valor1 = scanner.nextDouble();
-        System.out.print("Digite o valor 2: ");
-        double valor2 = scanner.nextDouble();
-        opcao = opcao.toUpperCase();  // transformando em maiusculo
+        try {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Digite a operação que deseja realizar: ");
+            System.out.println("A - adição / S - subtração / M - multiplicação / D - divisão");
+            String opcao = scanner.next();
+            opcao = opcao.toUpperCase();  // transformando em maiusculo
+            Operacao operacao = obterOperacaoDesejada(opcao);
 
-        Operacao operacao = obterOperacaoDesejada(opcao);
-        double resultado = operacao.calcular(valor1, valor2);
-        System.out.printf("O resultado é %.2f", resultado);
-        System.out.println();
-        System.out.println("Descricao: " + operacao.getDescricao());
+            System.out.print("Digite o valor 1: ");
+            double valor1 = scanner.nextDouble();
+            System.out.print("Digite o valor 2: ");
+            double valor2 = scanner.nextDouble();
+
+            double resultado = operacao.calcular(valor1, valor2);
+            System.out.printf("O resultado é %.2f", resultado);
+            System.out.println();
+            System.out.println("Descricao: " + operacao.getDescricao());
+        } catch (InputMismatchException e) {
+            System.out.println("Valor informado inválido");
+        } catch (CalculadoraException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Algum erro aconteceu!");
+        } finally {
+            System.out.println("Sempre executado!");
+        }
+        System.out.println("Fim do pograma!!");
     }
 
-    private static Operacao obterOperacaoDesejada(String opcao) {
-        Operacao operacao;
+    private static Operacao obterOperacaoDesejada(String opcao) throws CalculadoraException {
+ //   private static Operacao obterOperacaoDesejada(String opcao)  {
+    Operacao operacao;
         switch (opcao) {
             case "A":
                 operacao = new Adicao();
@@ -38,10 +51,10 @@ public class Principal {
                 operacao = new Divisao();
                 break;
             default:
-                operacao = null;
+                //operacao = null;
+                throw new CalculadoraException("Operacao com valor inválido: " + opcao);
         }
         return operacao;
     }
 
 }
-
